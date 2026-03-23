@@ -70,8 +70,9 @@
       var a=el.querySelector('a.sm-tile-content');
       if(!a)return;
       var id=encodeURIComponent(a.href);
+      var href=a.href;
       if(modalitaFotografo){
-        if(favs.includes(id)) el.classList.add('fzp-selected');
+        if(favs.includes(href)||favs.includes(id)) el.classList.add('fzp-selected');
         return;
       }
       if(el.querySelector('.fzp-btn'))return;
@@ -102,4 +103,4 @@
   addH();
   new MutationObserver(addH).observe(document.body,{childList:true,subtree:true});
   if(!modalitaFotografo) upd();
-})();})();
+})();
