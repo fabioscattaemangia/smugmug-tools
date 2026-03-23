@@ -1,8 +1,13 @@
-// FABIO ZITO PHOTOGRAPHY — Preferiti (bookmarklet v3)
-// Modalità cliente: seleziona foto e genera link
-// Modalità fotografo: apre link con ?sel= e mostra le foto evidenziate con link per aprirle
+// FABIO ZITO PHOTOGRAPHY — Preferiti (bookmarklet v4)
+// Modalità cliente: seleziona foto, genera link con ID brevi (es. i-88rjDGG)
+// Modalità fotografo: apre link ?sel= e mostra foto evidenziate con bordo rosso
 (function(){
   if(document.getElementById('fzp-bar'))return;
+
+  function estraiId(href){
+    var m = href.match(/\/(i-[a-zA-Z0-9]+)(?:\/|$)/);
+    return m ? m[1] : null;
+  }
 
   var urlParams = new URLSearchParams(window.location.search);
   var selParam = urlParams.get('sel');
@@ -15,7 +20,7 @@
   st.textContent=css;
   document.head.appendChild(st);
 
-  var favs=modalitaFotografo ? selezionati.slice() : [];
+  var favs=[];
 
   var bar=document.createElement('div');
   bar.id='fzp-bar';
@@ -34,17 +39,24 @@
   function buildModal(){
     var modal=document.getElementById('fzp-modal');
     if(modalitaFotografo){
-      var items=favs.map(function(id,i){
-        var href=decodeURIComponent(id);
-        var nome='Foto '+(i+1);
-        return '<li><span>'+nome+'</span><a href="'+href+'" target="_blank">Apri foto ↗</a></li>';
+      // Costruisce lista con link reali alle foto trovate nella pagina
+      var hrefsMap={};
+      document.querySelectorAll('li.sm-tile-wrapper a.sm-tile-content').forEach(function(a){
+        var id=estraiId(a.href);
+        if(id) hrefsMap[id]=a.href;
+      });
+      var items=selezionati.map(function(id,i){
+        var href=hrefsMap[id]||('#'+id);
+        return '<li><span>'+id+'</span><a href="'+href+'" target="_blank">Apri foto ↗</a></li>';
       }).join('');
-      modal.innerHTML='<h3>Selezione del cliente</h3><p>'+favs.length+' foto scelte. Clicca "Apri foto" per vedere e scaricare ciascuna.</p><ul class="fzp-lista">'+items+'</ul><button id="fzp-close">Chiudi</button>';
+      modal.innerHTML='<h3>Selezione del cliente</h3><p>'+selezionati.length+' foto scelte. Clicca "Apri foto" per vedere ciascuna.</p><ul class="fzp-lista">'+items+'</ul><button id="fzp-close">Chiudi</button>';
     } else {
+      var ids=favs.join(',');
+      var url=location.origin+location.pathname+'?sel='+ids;
       modal.innerHTML='<h3>La tua selezione è pronta</h3><p>Copia il link e invialo a Fabio Zito Photography.</p><textarea id="fzp-field" rows="3" readonly></textarea><button id="fzp-copy">Copia link</button><button id="fzp-close">Chiudi</button>';
       setTimeout(function(){
         var f=document.getElementById('fzp-field');
-        if(f) f.value=location.origin+location.pathname+'?sel='+favs.join(',');
+        if(f) f.value=url;
         var cp=document.getElementById('fzp-copy');
         if(cp) cp.onclick=function(){
           f.select();
@@ -69,11 +81,47 @@
     document.querySelectorAll('li.sm-tile-wrapper').forEach(function(el){
       var a=el.querySelector('a.sm-tile-content');
       if(!a)return;
-      var id=encodeURIComponent(a.href);
-      var href=a.href;
+      var id=estraiId(a.href);
+      if(!id)return;
+
       if(modalitaFotografo){
-        if(favs.includes(href)||favs.includes(id)) el.classList.add('fzp-selected');
+        if(selezionati.includes(id)) el.classList.add('fzp-selected');
         return;
+      }
+
+      if(el.querySelector('.fzp-btn'))return;
+      var btn=document.createElement('button');
+      btn.className='fzp-btn'+(favs.includes(id)?' on':'');
+      btn.title='Aggiungi ai preferiti';
+      btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+      btn.onclick=function(e){
+        e.preventDefault();e.stopPropagation();
+        btn.classList.add('pop');
+        btn.addEventListener('animationend',function(){btn.classList.remove('pop');},{once:true});
+        if(favs.includes(id)){favs=favs.filter(function(f){return f!==id;});btn.classList.remove('on');}
+        else{favs.push(id);btn.classList.add('on');}
+        upd();
+      };
+      el.appendChild(btn);
+    });
+  }
+
+  document.getElementById('fzp-share').onclick=function(){buildModal();ov.classList.add('open');};
+  ov.onclick=function(e){if(e.target===ov)ov.classList.remove('open');};
+
+  if(!modalitaFotografo){
+    var cl=document.getElementById('fzp-clear');
+    if(cl) cl.onclick=function(){
+      favs=[];upd();
+      document.querySelectorAll('.fzp-btn.on').forEach(function(b){b.classList.remove('on');});
+    };
+  }
+
+  if(modalitaFotografo) bar.classList.add('show');
+  addH();
+  new MutationObserver(addH).observe(document.body,{childList:true,subtree:true});
+  if(!modalitaFotografo) upd();
+})();        return;
       }
       if(el.querySelector('.fzp-btn'))return;
       var btn=document.createElement('button');
