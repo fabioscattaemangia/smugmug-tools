@@ -1,4 +1,4 @@
-// FABIO ZITO PHOTOGRAPHY — Preferiti (bookmarklet v5)
+// FABIO ZITO PHOTOGRAPHY — Preferiti (bookmarklet v6)
 // Modalità cliente: seleziona foto, genera link con ID brevi
 // Modalità fotografo: mostra selezione, scarica tutto in un click
 (function(){
@@ -9,22 +9,31 @@
     return m?m[1]:null;
   }
 
+  // Costruisce URL download dalla thumbnail (sostituisce dimensione con D)
+  function buildDownloadUrl(thumbSrc){
+    return thumbSrc
+      .replace(/\/[A-Z]{1,2}\/(i-[a-zA-Z0-9]+-)[A-Z]{1,2}\.jpg$/, '/D/$1D.jpg');
+  }
+
   var urlParams=new URLSearchParams(window.location.search);
   var selParam=urlParams.get('sel');
   var selezionati=selParam?selParam.split(','):[];
   var modalitaFotografo=selezionati.length>0;
 
-  var css='li.sm-tile-wrapper{position:relative!important}.fzp-btn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,background .2s}.fzp-btn:hover{transform:scale(1.12)}.fzp-btn.on{background:#e8334a}.fzp-btn svg path{fill:#bbb;transition:fill .2s}.fzp-btn.on svg path{fill:#fff}@keyframes fzpP{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}.fzp-btn.pop{animation:fzpP .3s ease}li.sm-tile-wrapper.fzp-selected{outline:4px solid #e8334a!important;outline-offset:-4px;border-radius:4px}#fzp-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;color:#fff;border-radius:999px;padding:12px 20px;display:flex;align-items:center;gap:14px;z-index:9999;font-family:-apple-system,sans-serif;font-size:14px;box-shadow:0 4px 24px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}#fzp-bar.show{transform:translateX(-50%) translateY(0)}#fzp-share{background:#e8334a;border:none;color:#fff;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}#fzp-clear{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.75);border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit}#fzp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;align-items:center;justify-content:center;font-family:-apple-system,sans-serif}#fzp-overlay.open{display:flex}#fzp-modal{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:calc(100vw - 40px);box-shadow:0 8px 40px rgba(0,0,0,.2);max-height:80vh;overflow-y:auto}#fzp-modal h3{margin:0 0 6px;font-size:17px;font-weight:600;color:#111}#fzp-modal p{margin:0 0 16px;font-size:14px;color:#666}#fzp-field{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:monospace;color:#333;background:#f9f9f9;resize:none;margin-bottom:14px}#fzp-copy{width:100%;padding:11px;background:#e8334a;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:10px}#fzp-dl-all{width:100%;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:10px}#fzp-dl-all:disabled{background:#888;cursor:default}#fzp-close{width:100%;padding:9px;background:transparent;color:#888;border:1px solid #ddd;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit}.fzp-lista{list-style:none;margin:0 0 16px;padding:0}.fzp-lista li{padding:8px 0;border-bottom:1px solid #eee;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;color:#333}.fzp-lista li a{color:#e8334a;text-decoration:none;font-size:12px;font-weight:500}.fzp-lista li a:hover{text-decoration:underline}.fzp-status{font-size:12px;color:#888;margin-bottom:12px;min-height:18px}';
+  var css='li.sm-tile-wrapper{position:relative!important}.fzp-btn{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .15s,background .2s}.fzp-btn:hover{transform:scale(1.12)}.fzp-btn.on{background:#e8334a}.fzp-btn svg path{fill:#bbb;transition:fill .2s}.fzp-btn.on svg path{fill:#fff}@keyframes fzpP{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}.fzp-btn.pop{animation:fzpP .3s ease}li.sm-tile-wrapper.fzp-selected{outline:4px solid #e8334a!important;outline-offset:-4px;border-radius:4px}#fzp-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;color:#fff;border-radius:999px;padding:12px 20px;display:flex;align-items:center;gap:14px;z-index:9999;font-family:-apple-system,sans-serif;font-size:14px;box-shadow:0 4px 24px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}#fzp-bar.show{transform:translateX(-50%) translateY(0)}#fzp-share{background:#e8334a;border:none;color:#fff;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}#fzp-clear{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.75);border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit}#fzp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;align-items:center;justify-content:center;font-family:-apple-system,sans-serif}#fzp-overlay.open{display:flex}#fzp-modal{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:calc(100vw - 40px);box-shadow:0 8px 40px rgba(0,0,0,.2);max-height:80vh;overflow-y:auto}#fzp-modal h3{margin:0 0 6px;font-size:17px;font-weight:600;color:#111}#fzp-modal p{margin:0 0 16px;font-size:14px;color:#666}#fzp-field{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:monospace;color:#333;background:#f9f9f9;resize:none;margin-bottom:14px}#fzp-copy{width:100%;padding:11px;background:#e8334a;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:10px}#fzp-dl-all{width:100%;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:10px}#fzp-dl-all:disabled{background:#999;cursor:default}#fzp-close{width:100%;padding:9px;background:transparent;color:#888;border:1px solid #ddd;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit}.fzp-status{font-size:12px;color:#888;margin-bottom:12px;min-height:18px}.fzp-lista{list-style:none;margin:0 0 16px;padding:0}.fzp-lista li{padding:8px 0;border-bottom:1px solid #eee;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;color:#333}.fzp-lista li a{color:#e8334a;text-decoration:none;font-size:12px;font-weight:500}.fzp-lista li a:hover{text-decoration:underline}';
 
   var st=document.createElement('style');
   st.textContent=css;
   document.head.appendChild(st);
 
+  // Mappa id -> {pageHref, thumbSrc} costruita mentre si legge il DOM
+  var fotoMap={};
+
   var favs=[];
   var bar=document.createElement('div');
   bar.id='fzp-bar';
   if(modalitaFotografo){
-    bar.innerHTML='<span id="fzp-count">'+selezionati.length+' foto selezionate dal cliente</span><button id="fzp-share">Vedi e scarica ↗</button>';
+    bar.innerHTML='<span id="fzp-count">'+selezionati.length+' foto selezionate dal cliente</span><button id="fzp-share">⬇ Scarica tutto</button>';
   } else {
     bar.innerHTML='<span id="fzp-count">0 preferite</span><button id="fzp-clear">Cancella</button><button id="fzp-share">❤ Condividi selezione</button>';
   }
@@ -35,77 +44,61 @@
   ov.innerHTML='<div id="fzp-modal"></div>';
   document.body.appendChild(ov);
 
-  // Recupera URL di download da una pagina foto (stesso dominio)
-  function getDownloadUrl(photoPageUrl){
-    return fetch(photoPageUrl, {credentials:'include'})
-      .then(function(r){ return r.text(); })
-      .then(function(html){
-        var tmp=document.createElement('div');
-        tmp.innerHTML=html;
-        var a=tmp.querySelector('a.user-ui-lightbox-download-button');
-        return a ? a.href : null;
-      })
-      .catch(function(){ return null; });
+  function scaricaTutte(){
+    var ids = modalitaFotografo ? selezionati : favs;
+    var btn = document.getElementById('fzp-dl-all');
+    var status = document.getElementById('fzp-status');
+    if(btn) btn.disabled=true;
+
+    var done=0;
+    function next(i){
+      if(i>=ids.length){
+        if(btn) btn.textContent='✓ Download avviati ('+done+' foto)';
+        if(status) status.textContent='Controlla i download del tuo browser.';
+        return;
+      }
+      var id=ids[i];
+      var foto=fotoMap[id];
+      if(!foto || !foto.thumbSrc){
+        if(status) status.textContent='Foto '+(i+1)+'/'+ids.length+' non trovata, salto...';
+        setTimeout(function(){next(i+1);},300);
+        return;
+      }
+      if(status) status.textContent='Scarico foto '+(i+1)+' di '+ids.length+'...';
+      var dlUrl=buildDownloadUrl(foto.thumbSrc);
+      var a=document.createElement('a');
+      a.href=dlUrl;
+      a.download=id+'.jpg';
+      a.style.display='none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){
+        document.body.removeChild(a);
+        done++;
+        next(i+1);
+      },900);
+    }
+    next(0);
   }
 
   function buildModal(){
     var modal=document.getElementById('fzp-modal');
+    var ids = modalitaFotografo ? selezionati : favs;
+    var items=ids.map(function(id,i){
+      var foto=fotoMap[id];
+      var link=foto?'<a href="'+foto.pageHref+'" target="_blank">Apri ↗</a>':'<span style="color:#aaa">non trovata</span>';
+      return '<li><span>Foto '+(i+1)+'</span>'+link+'</li>';
+    }).join('');
+
     if(modalitaFotografo){
-      // Costruisce lista con link alle pagine foto
-      var hrefsMap={};
-      document.querySelectorAll('li.sm-tile-wrapper a.sm-tile-content').forEach(function(a){
-        var id=estraiId(a.href);
-        if(id) hrefsMap[id]=a.href;
-      });
-
-      var items=selezionati.map(function(id,i){
-        var href=hrefsMap[id]||null;
-        var link=href?'<a href="'+href+'" target="_blank">Apri ↗</a>':'<span style="color:#aaa">non trovata</span>';
-        return '<li><span>Foto '+(i+1)+' ('+id+')</span>'+link+'</li>';
-      }).join('');
-
       modal.innerHTML=
         '<h3>Selezione del cliente</h3>'+
-        '<p>'+selezionati.length+' foto scelte.</p>'+
+        '<p>'+ids.length+' foto scelte.</p>'+
         '<div class="fzp-status" id="fzp-status"></div>'+
-        '<button id="fzp-dl-all">⬇ Scarica tutto ('+selezionati.length+' foto)</button>'+
+        '<button id="fzp-dl-all">⬇ Scarica tutto ('+ids.length+' foto)</button>'+
         '<ul class="fzp-lista">'+items+'</ul>'+
         '<button id="fzp-close">Chiudi</button>';
-
-      document.getElementById('fzp-dl-all').onclick=function(){
-        var btn=this;
-        var status=document.getElementById('fzp-status');
-        btn.disabled=true;
-        btn.textContent='Recupero link download...';
-
-        // Raccoglie gli href delle pagine foto dalla pagina attuale
-        var photoPages=selezionati.map(function(id){ return hrefsMap[id]||null; }).filter(Boolean);
-
-        var done=0;
-        function scaricaProssima(i){
-          if(i>=photoPages.length){
-            btn.textContent='✓ Download avviati ('+done+' foto)';
-            status.textContent='Controlla i download del browser.';
-            return;
-          }
-          status.textContent='Recupero foto '+(i+1)+' di '+photoPages.length+'...';
-          getDownloadUrl(photoPages[i]).then(function(dlUrl){
-            if(dlUrl){
-              var a=document.createElement('a');
-              a.href=dlUrl;
-              a.download=selezionati[i]+'.jpg';
-              a.style.display='none';
-              document.body.appendChild(a);
-              a.click();
-              setTimeout(function(){ document.body.removeChild(a); },1000);
-              done++;
-            }
-            setTimeout(function(){ scaricaProssima(i+1); },800);
-          });
-        }
-        scaricaProssima(0);
-      };
-
+      document.getElementById('fzp-dl-all').onclick=scaricaTutte;
     } else {
       modal.innerHTML=
         '<h3>La tua selezione è pronta</h3>'+
@@ -139,9 +132,14 @@
   function addH(){
     document.querySelectorAll('li.sm-tile-wrapper').forEach(function(el){
       var a=el.querySelector('a.sm-tile-content');
-      if(!a)return;
+      var img=el.querySelector('img.sm-image');
+      if(!a||!img)return;
       var id=estraiId(a.href);
       if(!id)return;
+
+      // Aggiorna mappa foto
+      fotoMap[id]={pageHref:a.href, thumbSrc:img.src};
+
       if(modalitaFotografo){
         if(selezionati.includes(id)) el.classList.add('fzp-selected');
         return;
@@ -163,7 +161,13 @@
     });
   }
 
-  document.getElementById('fzp-share').onclick=function(){buildModal();ov.classList.add('open');};
+  document.getElementById('fzp-share').onclick=function(){
+    if(modalitaFotografo){
+      buildModal();ov.classList.add('open');
+    } else {
+      buildModal();ov.classList.add('open');
+    }
+  };
   ov.onclick=function(e){if(e.target===ov)ov.classList.remove('open');};
   if(!modalitaFotografo){
     var cl=document.getElementById('fzp-clear');
