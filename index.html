@@ -8,15 +8,13 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#111;color:#fff;min-height:100vh}
-
 #header{background:#111;padding:14px 16px;position:sticky;top:0;z-index:100;border-bottom:1px solid #222;display:none;align-items:center;justify-content:space-between;gap:10px}
 #header-title{font-size:15px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subtitle{font-size:12px;color:#888;margin-top:2px}
 #btn-condividi{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;display:none;-webkit-appearance:none}
-#count-badge{background:rgba(255,255,255,0.3);color:#fff;border-radius:999px;font-size:11px;font-weight:700;padding:2px 7px;margin-left:4px;display:none}
-
+#count-badge{background:rgba(255,255,255,.3);color:#fff;border-radius:999px;font-size:11px;font-weight:700;padding:2px 7px;margin-left:4px;display:none}
 #landing{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh;padding:32px 24px;text-align:center}
-.logo{font-size:28px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.logo{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
 .logo span{color:#e8334a}
 .tagline{font-size:14px;color:#888;line-height:1.6;margin-bottom:32px;max-width:300px}
 #url-input{width:100%;max-width:400px;padding:14px 16px;background:#1c1c1c;border:1px solid #333;border-radius:12px;color:#fff;font-size:15px;outline:none;margin-bottom:12px;display:block;-webkit-appearance:none}
@@ -25,32 +23,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #btn-carica{width:100%;max-width:400px;padding:15px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;-webkit-appearance:none}
 #btn-carica:active{background:#c4253b}
 .errore{color:#e8334a;font-size:13px;margin-top:10px;display:none;max-width:400px}
-
 #spinner{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:16px}
 .spin{width:36px;height:36px;border:3px solid #333;border-top-color:#e8334a;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin-text{color:#888;font-size:14px}
-
-#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding-bottom:120px;display:none}
+#grid{display:none;grid-template-columns:repeat(3,1fr);gap:2px;padding-bottom:120px}
 .tile{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;background:#1c1c1c}
 .tile img{width:100%;height:100%;object-fit:cover;display:block}
 .overlay{position:absolute;inset:0;background:rgba(232,51,74,0);transition:background .15s;pointer-events:none}
-.tile.selected .overlay{background:rgba(232,51,74,0.3)}
-.heart{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .15s,transform .15s}
+.tile.selected .overlay{background:rgba(232,51,74,.3)}
+.heart{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .15s,transform .15s}
 .tile.selected .heart{background:#e8334a;transform:scale(1.1)}
 .heart svg{width:14px;height:14px}
 .heart svg path{fill:#fff;opacity:.8}
 .tile.selected .heart svg path{opacity:1}
-
 #load-more{text-align:center;padding:20px;display:none}
 #btn-load{background:#222;color:#fff;border:1px solid #333;border-radius:999px;padding:11px 24px;font-size:14px;cursor:pointer;-webkit-appearance:none}
-
 #bar{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:1px solid #2a2a2a;padding:12px 16px 20px;display:none;align-items:center;justify-content:space-between;gap:12px;z-index:200}
 #bar-count{font-size:14px;color:#aaa}
 #bar-count strong{color:#fff}
 #bar-btn{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;-webkit-appearance:none;white-space:nowrap}
 #bar-btn:active{background:#c4253b}
-
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 #modal-overlay.open{display:flex}
 #modal{background:#1c1c1c;border-radius:20px 20px 0 0;padding:24px 24px 36px;width:100%;max-width:500px}
@@ -60,7 +53,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #btn-copia{width:100%;padding:14px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px;-webkit-appearance:none}
 #btn-copia:active{background:#c4253b}
 #btn-chiudi{width:100%;padding:13px;background:transparent;color:#888;border:1px solid #333;border-radius:12px;font-size:15px;cursor:pointer;-webkit-appearance:none}
-
 #foto-mode{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:32px 24px;text-align:center;gap:16px}
 #foto-mode h2{font-size:22px;font-weight:700}
 #foto-mode p{color:#888;font-size:15px;line-height:1.6;max-width:320px}
@@ -69,15 +61,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </style>
 </head>
 <body>
-
 <div id="header">
-  <div>
-    <div id="header-title">Galleria</div>
-    <div class="subtitle">Tocca le foto che ti piacciono ❤</div>
-  </div>
+  <div><div id="header-title">Galleria</div><div class="subtitle">Tocca le foto che ti piacciono ❤</div></div>
   <button id="btn-condividi">Invia <span id="count-badge"></span></button>
 </div>
-
 <div id="landing">
   <div class="logo">Fabio Zito<span>.</span></div>
   <p class="tagline">Inserisci il link della galleria ricevuto dal fotografo per scegliere le tue foto preferite.</p>
@@ -85,20 +72,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button id="btn-carica">Apri galleria</button>
   <div class="errore" id="errore-msg">Link non valido. Assicurati di copiare l'URL completo dalla barra del browser.</div>
 </div>
-
-<div id="spinner">
-  <div class="spin"></div>
-  <div class="spin-text" id="spin-text">Carico le foto…</div>
-</div>
-
+<div id="spinner"><div class="spin"></div><div class="spin-text" id="spin-text">Carico le foto…</div></div>
 <div id="grid"></div>
 <div id="load-more"><button id="btn-load">Carica altre foto</button></div>
-
 <div id="bar">
   <div id="bar-count"><strong>0</strong> foto selezionate</div>
   <button id="bar-btn">Invia selezione ❤</button>
 </div>
-
 <div id="modal-overlay">
   <div id="modal">
     <h3>Selezione pronta!</h3>
@@ -108,7 +88,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button id="btn-chiudi">Chiudi</button>
   </div>
 </div>
-
 <div id="foto-mode">
   <div style="font-size:48px">📸</div>
   <h2>Selezione ricevuta!</h2>
@@ -116,212 +95,174 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="foto-ids" id="foto-ids-list"></div>
   <button id="btn-open-sm">Apri su SmugMug ↗</button>
 </div>
-
 <script>
 (function(){
 'use strict';
+var API_KEY='W0g9oqdOrzuhEpIQ2qaTXimrzsfryKSZ';
+var SM_API='https://api.smugmug.com/api/v2';
+var photos=[],selected=new Set(),page=1,total=0,albumKey='',nodeKey='';
+var PER_PAGE=50;
+var params=new URLSearchParams(location.search);
+var pGallery=params.get('gallery');
+var pSel=params.get('sel');
 
-var API_KEY = 'W0g9oqdOrzuhEpIQ2qaTXimrzsfryKSZ';
-var SM_API = 'https://api.smugmug.com/api/v2';
-
-var photos = [], selected = new Set(), page = 1, total = 0, albumKey = '', nodeKey = '';
-var PER_PAGE = 50;
-
-var params = new URLSearchParams(location.search);
-var pGallery = params.get('gallery');
-var pSel = params.get('sel');
-
-// --- Modalità fotografo ---
-if (pSel && pGallery) {
+if(pSel&&pGallery){
   show('foto-mode');
-  var ids = pSel.split(',').filter(Boolean);
-  document.getElementById('foto-count').textContent = ids.length;
-  document.getElementById('foto-ids-list').textContent = ids.join('\n');
-  document.getElementById('btn-open-sm').onclick = function(){
-    window.open('https://www.fabiozito.com/gallery/n-' + pGallery + '?sel=' + pSel, '_blank');
+  var ids=pSel.split(',').filter(Boolean);
+  document.getElementById('foto-count').textContent=ids.length;
+  document.getElementById('foto-ids-list').textContent=ids.join('\n');
+  document.getElementById('btn-open-sm').onclick=function(){
+    window.open('https://www.fabiozito.com/gallery/n-'+pGallery+'?sel='+pSel,'_blank');
   };
   return;
 }
 
-// --- Modalità cliente con galleria diretta ---
-if (pGallery) { go(pGallery); return; }
+if(pGallery){go(pGallery);return;}
 
-// --- Landing ---
 show('landing');
-document.getElementById('btn-carica').onclick = submit;
-document.getElementById('url-input').addEventListener('keydown', function(e){ if(e.key==='Enter') submit(); });
-// Se arriva un URL già nell'input (es. da condivisione iOS)
-window.addEventListener('load', function(){
-  var hash = decodeURIComponent(location.hash.slice(1));
-  if(hash && hash.includes('fabiozito.com')) {
-    document.getElementById('url-input').value = hash;
-  }
-});
+document.getElementById('btn-carica').onclick=submit;
+document.getElementById('url-input').addEventListener('keydown',function(e){if(e.key==='Enter')submit();});
 
 function submit(){
-  var v = document.getElementById('url-input').value.trim();
-  var nk = parseNodeKey(v);
-  if(!nk){ err('Link non valido. Copia l\'URL completo dalla barra del browser (deve contenere /n-XXXXX).'); return; }
+  var v=document.getElementById('url-input').value.trim();
+  var nk=parseNodeKey(v);
+  if(!nk){err('Link non valido. Copia l\'URL completo dalla barra del browser.');return;}
   err('');
   go(nk);
 }
 
 function parseNodeKey(url){
-  // https://www.fabiozito.com/Cartella/n-p4wQLk  oppure  https://www.fabiozito.com/Cartella/n-p4wQLk/i-XXXXX
-  var m = url.match(/\/n-([A-Za-z0-9]{4,10})(?:\/|$|\?)/);
-  return m ? m[1] : null;
+  var m=url.match(/\/n-([A-Za-z0-9]{4,10})(?:\/|$|\?)/);
+  if(m)return m[1];
+  if(/^[A-Za-z0-9]{4,10}$/.test(url))return url;
+  return null;
 }
 
 function go(nk){
-  nodeKey = nk;
-  hide('landing'); show('spinner');
-  setText('spin-text', 'Carico la galleria…');
-
-  // Prima ottieni il node per trovare l'albumKey
-  smFetch('/node/' + nk + '?_verbosity=1')
-    .then(function(data){
-      var node = data.Response && data.Response.Node;
-      if(!node) throw new Error('Galleria non trovata. Controlla il link.');
-      var albumUri = node.Uris && node.Uris.Album;
-      if(!albumUri) throw new Error('Nessun album trovato in questa galleria.');
-      albumKey = albumUri.split('/').pop();
-      document.getElementById('header-title').textContent = node.Name || 'Galleria';
-      setText('spin-text', 'Carico le foto…');
-      return loadPage(1);
-    })
-    .catch(function(e){
-      hide('spinner'); show('landing');
-      err('Errore: ' + e.message);
-    });
+  nodeKey=nk;
+  hide('landing');show('spinner');
+  setText('spin-text','Carico la galleria…');
+  smFetch('/node/'+nk+'?_verbosity=1').then(function(data){
+    var node=data.Response&&data.Response.Node;
+    if(!node)throw new Error('Galleria non trovata.');
+    var albumUri=node.Uris&&node.Uris.Album;
+    if(!albumUri)throw new Error('Nessun album trovato.');
+    albumKey=albumUri.split('/').pop();
+    document.getElementById('header-title').textContent=node.Name||'Galleria';
+    setText('spin-text','Carico le foto…');
+    return loadPage(1);
+  }).catch(function(e){
+    hide('spinner');show('landing');
+    err('Errore: '+e.message);
+  });
 }
 
 function loadPage(p){
-  var start = (p-1)*PER_PAGE + 1;
-  return smFetch('/album/' + albumKey + '!images?count=' + PER_PAGE + '&start=' + start + '&_verbosity=1')
-    .then(function(data){
-      var imgs = data.Response && data.Response.AlbumImage;
-      var pages = data.Response && data.Response.Pages;
-      if(pages) total = pages.Total || 0;
-      if(!imgs || !imgs.length){
-        if(p===1) throw new Error('Nessuna foto trovata in questa galleria.');
-        return;
-      }
-      imgs.forEach(function(img){
-        photos.push({ id: img.ImageKey, thumb: img.ThumbnailUrl });
-      });
-      renderPage(imgs, p===1);
-      hide('spinner');
-      document.getElementById('header').style.display = 'flex';
-      document.getElementById('grid').style.display = 'grid';
-      if(photos.length < total){
-        document.getElementById('load-more').style.display = 'block';
-        document.getElementById('btn-load').onclick = function(){
-          page++;
-          document.getElementById('load-more').style.display = 'none';
-          show('spinner'); setText('spin-text','Carico altre foto…');
-          loadPage(page).then(function(){ hide('spinner'); });
-        };
-      } else {
-        document.getElementById('load-more').style.display = 'none';
-      }
-    });
+  var start=(p-1)*PER_PAGE+1;
+  return smFetch('/album/'+albumKey+'!images?count='+PER_PAGE+'&start='+start+'&_verbosity=1').then(function(data){
+    var imgs=data.Response&&data.Response.AlbumImage;
+    var pages=data.Response&&data.Response.Pages;
+    if(pages)total=pages.Total||0;
+    if(!imgs||!imgs.length){if(p===1)throw new Error('Nessuna foto trovata.');return;}
+    imgs.forEach(function(img){photos.push({id:img.ImageKey,thumb:img.ThumbnailUrl});});
+    renderPage(imgs,p===1);
+    hide('spinner');
+    document.getElementById('header').style.display='flex';
+    document.getElementById('grid').style.display='grid';
+    if(photos.length<total){
+      document.getElementById('load-more').style.display='block';
+      document.getElementById('btn-load').onclick=function(){
+        page++;
+        document.getElementById('load-more').style.display='none';
+        show('spinner');setText('spin-text','Carico altre foto…');
+        loadPage(page).then(function(){hide('spinner');});
+      };
+    } else {
+      document.getElementById('load-more').style.display='none';
+    }
+  });
 }
 
-function renderPage(imgs, clear){
-  var grid = document.getElementById('grid');
-  if(clear) grid.innerHTML = '';
+function renderPage(imgs,clear){
+  var grid=document.getElementById('grid');
+  if(clear)grid.innerHTML='';
   imgs.forEach(function(img){
-    var id = img.ImageKey;
-    var tile = document.createElement('div');
-    tile.className = 'tile' + (selected.has(id) ? ' selected' : '');
-    tile.innerHTML =
-      '<img src="' + img.ThumbnailUrl + '" loading="lazy" alt="">' +
-      '<div class="overlay"></div>' +
-      '<div class="heart"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
-    tile.addEventListener('click', function(){ toggle(id, tile); });
+    var id=img.ImageKey;
+    var tile=document.createElement('div');
+    tile.className='tile'+(selected.has(id)?' selected':'');
+    tile.innerHTML='<img src="'+img.ThumbnailUrl+'" loading="lazy" alt=""><div class="overlay"></div><div class="heart"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
+    tile.addEventListener('click',function(){toggle(id,tile);});
     grid.appendChild(tile);
   });
 }
 
-function toggle(id, tile){
-  if(selected.has(id)){ selected.delete(id); tile.classList.remove('selected'); }
-  else { selected.add(id); tile.classList.add('selected'); }
+function toggle(id,tile){
+  if(selected.has(id)){selected.delete(id);tile.classList.remove('selected');}
+  else{selected.add(id);tile.classList.add('selected');}
   updateBar();
 }
 
 function updateBar(){
-  var n = selected.size;
-  document.getElementById('bar-count').innerHTML = '<strong>' + n + '</strong> ' + (n===1?'foto selezionata':'foto selezionate');
-  document.getElementById('bar').style.display = n > 0 ? 'flex' : 'none';
-  document.getElementById('count-badge').textContent = n;
-  document.getElementById('count-badge').style.display = n > 0 ? 'inline' : 'none';
-  document.getElementById('btn-condividi').style.display = n > 0 ? 'block' : 'none';
+  var n=selected.size;
+  document.getElementById('bar-count').innerHTML='<strong>'+n+'</strong> '+(n===1?'foto selezionata':'foto selezionate');
+  document.getElementById('bar').style.display=n>0?'flex':'none';
+  document.getElementById('count-badge').textContent=n;
+  document.getElementById('count-badge').style.display=n>0?'inline':'none';
+  document.getElementById('btn-condividi').style.display=n>0?'block':'none';
 }
 
 function openModal(){
-  var ids = [...selected].join(',');
-  var link = location.origin + location.pathname + '?gallery=' + nodeKey + '&sel=' + ids;
-  document.getElementById('link-box').value = link;
+  var ids=[...selected].join(',');
+  var link=location.origin+location.pathname+'?gallery='+nodeKey+'&sel='+ids;
+  document.getElementById('link-box').value=link;
   document.getElementById('modal-overlay').classList.add('open');
 }
 
-document.getElementById('bar-btn').onclick = openModal;
-document.getElementById('btn-condividi').onclick = openModal;
-document.getElementById('btn-copia').onclick = function(){
-  var box = document.getElementById('link-box');
+document.getElementById('bar-btn').onclick=openModal;
+document.getElementById('btn-condividi').onclick=openModal;
+document.getElementById('btn-copia').onclick=function(){
+  var box=document.getElementById('link-box');
   box.select();
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(box.value).then(function(){
-      document.getElementById('btn-copia').textContent = '✓ Copiato!';
-      setTimeout(function(){ document.getElementById('btn-copia').textContent = 'Copia link'; }, 2000);
-    });
-  } else { document.execCommand('copy'); }
+  if(navigator.clipboard){navigator.clipboard.writeText(box.value).then(function(){document.getElementById('btn-copia').textContent='✓ Copiato!';setTimeout(function(){document.getElementById('btn-copia').textContent='Copia link';},2000);});}
+  else{document.execCommand('copy');}
 };
-document.getElementById('btn-chiudi').onclick = function(){ document.getElementById('modal-overlay').classList.remove('open'); };
-document.getElementById('modal-overlay').onclick = function(e){ if(e.target===this) this.classList.remove('open'); };
+document.getElementById('btn-chiudi').onclick=function(){document.getElementById('modal-overlay').classList.remove('open');};
+document.getElementById('modal-overlay').onclick=function(e){if(e.target===this)this.classList.remove('open');};
 
-// --- API SmugMug con fallback proxy ---
-var PROXIES = [
-  function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); },
-  function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
-  function(u){ return 'https://thingproxy.freeboard.io/fetch/' + u; },
+// Proxy in ordine di affidabilità (allorigins primo perché funziona)
+var PROXIES=[
+  function(u){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u);},
+  function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},
+  function(u){return 'https://thingproxy.freeboard.io/fetch/'+u;}
 ];
-var proxyIdx = 0;
+var proxyIdx=0;
 
 function smFetch(path){
-  var url = SM_API + path;
-  url += url.includes('?') ? '&' : '?';
-  url += 'APIKey=' + API_KEY + '&_accept=application/json';
-
+  var url=SM_API+path;
+  url+=url.includes('?')?'&':'?';
+  url+='APIKey='+API_KEY+'&_accept=application/json';
   function tryProxy(idx){
-    if(idx >= PROXIES.length) return Promise.reject(new Error('Impossibile connettersi. Riprova tra qualche secondo.'));
-    var proxyUrl = PROXIES[idx](url);
-    return fetch(proxyUrl, { signal: AbortSignal.timeout(8000) })
-      .then(function(r){
-        if(!r.ok) throw new Error('HTTP ' + r.status);
-        return r.text();
-      })
-      .then(function(text){
-        if(!text || text.trim() === '') throw new Error('Risposta vuota');
-        var data = JSON.parse(text);
-        if(data.Code && data.Code !== 200) throw new Error(data.Message || 'Errore API SmugMug');
-        proxyIdx = idx; // salva il proxy che funziona
-        return data;
-      })
-      .catch(function(e){
-        console.warn('Proxy ' + idx + ' fallito:', e.message);
-        return tryProxy(idx + 1);
-      });
+    if(idx>=PROXIES.length)return Promise.reject(new Error('Impossibile connettersi. Riprova tra qualche secondo.'));
+    return fetch(PROXIES[idx](url)).then(function(r){
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return r.text();
+    }).then(function(text){
+      if(!text||text.trim()==='')throw new Error('Risposta vuota');
+      var data=JSON.parse(text);
+      if(data.Code&&data.Code!==200)throw new Error(data.Message||'Errore API');
+      proxyIdx=idx;
+      return data;
+    }).catch(function(e){
+      return tryProxy(idx+1);
+    });
   }
   return tryProxy(proxyIdx);
 }
 
-// --- Utils ---
-function show(id){ var e=document.getElementById(id); if(e){ e.style.display=''; } }
-function hide(id){ var e=document.getElementById(id); if(e){ e.style.display='none'; } }
-function err(msg){ var e=document.getElementById('errore-msg'); e.textContent=msg; e.style.display=msg?'block':'none'; }
-function setText(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; }
-
+function show(id){var e=document.getElementById(id);if(e)e.style.display='';}
+function hide(id){var e=document.getElementById(id);if(e)e.style.display='none';}
+function err(msg){var e=document.getElementById('errore-msg');e.textContent=msg;e.style.display=msg?'block':'none';}
+function setText(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
 })();
 </script>
 </body>
