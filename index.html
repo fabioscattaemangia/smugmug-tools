@@ -4,120 +4,101 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>Fabio Zito Photography — Selezione foto</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#111;color:#fff;min-height:100vh}
 
-/* Header */
-#header{background:#111;padding:14px 16px;position:sticky;top:0;z-index:100;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;gap:10px}
-#header h1{font-size:15px;font-weight:600;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
-#header .subtitle{font-size:12px;color:#888;margin-top:2px}
-#btn-condividi{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;display:none;transition:background .15s}
-#btn-condividi:active{background:#c4253b}
-#count-badge{background:#e8334a;color:#fff;border-radius:999px;font-size:11px;font-weight:700;padding:2px 7px;margin-left:4px;display:none}
+#header{background:#111;padding:14px 16px;position:sticky;top:0;z-index:100;border-bottom:1px solid #222;display:none;align-items:center;justify-content:space-between;gap:10px}
+#header-title{font-size:15px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtitle{font-size:12px;color:#888;margin-top:2px}
+#btn-condividi{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;display:none;-webkit-appearance:none}
+#count-badge{background:rgba(255,255,255,0.3);color:#fff;border-radius:999px;font-size:11px;font-weight:700;padding:2px 7px;margin-left:4px;display:none}
 
-/* Landing / caricamento */
-#landing{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:32px 24px;text-align:center}
-#landing .logo{font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:8px}
-#landing .logo span{color:#e8334a}
-#landing p{font-size:15px;color:#888;line-height:1.6;margin-bottom:32px;max-width:320px}
-#url-form{width:100%;max-width:400px}
-#url-input{width:100%;padding:14px 16px;background:#1c1c1c;border:1px solid #333;border-radius:12px;color:#fff;font-size:15px;outline:none;margin-bottom:12px}
+#landing{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh;padding:32px 24px;text-align:center}
+.logo{font-size:28px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.logo span{color:#e8334a}
+.tagline{font-size:14px;color:#888;line-height:1.6;margin-bottom:32px;max-width:300px}
+#url-input{width:100%;max-width:400px;padding:14px 16px;background:#1c1c1c;border:1px solid #333;border-radius:12px;color:#fff;font-size:15px;outline:none;margin-bottom:12px;display:block;-webkit-appearance:none}
 #url-input::placeholder{color:#555}
 #url-input:focus{border-color:#e8334a}
-#btn-carica{width:100%;padding:15px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+#btn-carica{width:100%;max-width:400px;padding:15px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;-webkit-appearance:none}
 #btn-carica:active{background:#c4253b}
-.errore{color:#e8334a;font-size:13px;margin-top:8px;display:none}
+.errore{color:#e8334a;font-size:13px;margin-top:10px;display:none;max-width:400px}
 
-/* Spinner */
 #spinner{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:16px}
-.spin{width:40px;height:40px;border:3px solid #333;border-top-color:#e8334a;border-radius:50%;animation:spin .8s linear infinite}
+.spin{width:36px;height:36px;border:3px solid #333;border-top-color:#e8334a;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin-text{color:#888;font-size:14px}
 
-/* Griglia foto */
-#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding-bottom:100px}
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding-bottom:120px;display:none}
 .tile{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;background:#1c1c1c}
-.tile img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s}
-.tile.selected img{opacity:.75}
-.heart{position:absolute;top:6px;right:6px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.overlay{position:absolute;inset:0;background:rgba(232,51,74,0);transition:background .15s;pointer-events:none}
+.tile.selected .overlay{background:rgba(232,51,74,0.3)}
+.heart{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .15s,transform .15s}
 .tile.selected .heart{background:#e8334a;transform:scale(1.1)}
-.heart svg{width:16px;height:16px}
-.heart svg path{fill:#fff;opacity:.8;transition:opacity .15s}
+.heart svg{width:14px;height:14px}
+.heart svg path{fill:#fff;opacity:.8}
 .tile.selected .heart svg path{opacity:1}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1.1)}}
-.tile.selected .heart{animation:pop .25s ease}
 
-/* Bar selezione in basso */
-#bar{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:1px solid #2a2a2a;padding:12px 16px;display:none;align-items:center;justify-content:space-between;gap:12px;z-index:200}
+#load-more{text-align:center;padding:20px;display:none}
+#btn-load{background:#222;color:#fff;border:1px solid #333;border-radius:999px;padding:11px 24px;font-size:14px;cursor:pointer;-webkit-appearance:none}
+
+#bar{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:1px solid #2a2a2a;padding:12px 16px 20px;display:none;align-items:center;justify-content:space-between;gap:12px;z-index:200}
 #bar-count{font-size:14px;color:#aaa}
 #bar-count strong{color:#fff}
-#bar-btn{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer}
+#bar-btn{background:#e8334a;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;-webkit-appearance:none;white-space:nowrap}
 #bar-btn:active{background:#c4253b}
 
-/* Modal link */
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 #modal-overlay.open{display:flex}
-#modal{background:#1c1c1c;border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:500px}
+#modal{background:#1c1c1c;border-radius:20px 20px 0 0;padding:24px 24px 36px;width:100%;max-width:500px}
 #modal h3{font-size:18px;font-weight:700;margin-bottom:6px}
 #modal p{font-size:14px;color:#888;margin-bottom:16px;line-height:1.5}
-#link-box{width:100%;background:#111;border:1px solid #333;border-radius:10px;padding:12px;font-size:12px;font-family:monospace;color:#aaa;resize:none;margin-bottom:12px;word-break:break-all;min-height:60px}
-#btn-copia{width:100%;padding:14px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+#link-box{width:100%;background:#111;border:1px solid #333;border-radius:10px;padding:12px;font-size:12px;font-family:monospace;color:#aaa;margin-bottom:12px;word-break:break-all;min-height:64px;resize:none;display:block}
+#btn-copia{width:100%;padding:14px;background:#e8334a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px;-webkit-appearance:none}
 #btn-copia:active{background:#c4253b}
-#btn-chiudi{width:100%;padding:13px;background:transparent;color:#888;border:1px solid #333;border-radius:12px;font-size:15px;cursor:pointer}
+#btn-chiudi{width:100%;padding:13px;background:transparent;color:#888;border:1px solid #333;border-radius:12px;font-size:15px;cursor:pointer;-webkit-appearance:none}
 
-/* Load more */
-#load-more{text-align:center;padding:24px;display:none}
-#btn-load{background:#222;color:#fff;border:1px solid #333;border-radius:999px;padding:12px 28px;font-size:14px;cursor:pointer}
-
-/* Modo fotografo */
 #foto-mode{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:32px 24px;text-align:center;gap:16px}
 #foto-mode h2{font-size:22px;font-weight:700}
 #foto-mode p{color:#888;font-size:15px;line-height:1.6;max-width:320px}
-#btn-open-sm{background:#e8334a;color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:600;cursor:pointer;width:100%;max-width:320px}
-.foto-ids{background:#1c1c1c;border-radius:10px;padding:12px 16px;font-size:12px;font-family:monospace;color:#aaa;width:100%;max-width:320px;text-align:left;line-height:1.8;word-break:break-all}
+#btn-open-sm{background:#e8334a;color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:600;cursor:pointer;width:100%;max-width:320px;-webkit-appearance:none}
+.foto-ids{background:#1c1c1c;border-radius:10px;padding:12px 16px;font-size:12px;font-family:monospace;color:#aaa;width:100%;max-width:320px;text-align:left;line-height:2;word-break:break-all}
 </style>
 </head>
 <body>
 
-<div id="header" style="display:none">
+<div id="header">
   <div>
-    <div id="header-title">Fabio Zito Photography</div>
-    <div class="subtitle" id="header-sub">Tocca le foto che ti piacciono ❤</div>
+    <div id="header-title">Galleria</div>
+    <div class="subtitle">Tocca le foto che ti piacciono ❤</div>
   </div>
   <button id="btn-condividi">Invia <span id="count-badge"></span></button>
 </div>
 
-<!-- Landing: inserisci URL -->
 <div id="landing">
   <div class="logo">Fabio Zito<span>.</span></div>
-  <p>Inserisci il link della galleria che ti ha mandato il fotografo per selezionare le tue foto preferite.</p>
-  <div id="url-form">
-    <input id="url-input" type="url" inputmode="url" placeholder="Incolla qui il link della galleria..." autocomplete="off" autocorrect="off" spellcheck="false">
-    <button id="btn-carica" type="button">Apri galleria</button>
-    <div class="errore" id="errore-msg">Link non valido. Assicurati di incollare l'URL completo della galleria.</div>
-  </div>
+  <p class="tagline">Inserisci il link della galleria ricevuto dal fotografo per scegliere le tue foto preferite.</p>
+  <input id="url-input" type="url" inputmode="url" placeholder="Incolla qui il link della galleria…" autocomplete="off" autocorrect="off" spellcheck="false">
+  <button id="btn-carica">Apri galleria</button>
+  <div class="errore" id="errore-msg">Link non valido. Assicurati di copiare l'URL completo dalla barra del browser.</div>
 </div>
 
-<!-- Spinner caricamento -->
 <div id="spinner">
   <div class="spin"></div>
-  <div class="spin-text">Carico le foto...</div>
+  <div class="spin-text" id="spin-text">Carico le foto…</div>
 </div>
 
-<!-- Griglia foto -->
 <div id="grid"></div>
 <div id="load-more"><button id="btn-load">Carica altre foto</button></div>
 
-<!-- Barra selezione -->
 <div id="bar">
   <div id="bar-count"><strong>0</strong> foto selezionate</div>
   <button id="bar-btn">Invia selezione ❤</button>
 </div>
 
-<!-- Modal link da copiare -->
 <div id="modal-overlay">
   <div id="modal">
     <h3>Selezione pronta!</h3>
@@ -128,266 +109,218 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- Modalità fotografo (quando arriva il link con ?sel=) -->
 <div id="foto-mode">
   <div style="font-size:48px">📸</div>
-  <h2>Selezione del cliente</h2>
-  <p id="foto-mode-desc">Il cliente ha selezionato <strong id="foto-count">0</strong> foto.</p>
-  <p style="color:#666;font-size:13px">Apri la galleria su SmugMug e usa il bookmarklet per scaricare le foto selezionate.</p>
+  <h2>Selezione ricevuta!</h2>
+  <p>Il cliente ha selezionato <strong id="foto-count">0</strong> foto. Apri la galleria su SmugMug e usa il bookmarklet per scaricarle.</p>
   <div class="foto-ids" id="foto-ids-list"></div>
-  <button id="btn-open-sm">Apri galleria su SmugMug</button>
+  <button id="btn-open-sm">Apri su SmugMug ↗</button>
 </div>
 
 <script>
-(function() {
-  'use strict';
+(function(){
+'use strict';
 
-  var API_KEY = 'W0g9oqdOrzuhEpIQ2qaTXimrzsfryKSZ';
-  var PROXY = 'https://corsproxy.io/?url=';
-  var SM_API = 'https://api.smugmug.com/api/v2';
+var API_KEY = 'W0g9oqdOrzuhEpIQ2qaTXimrzsfryKSZ';
+var SM_API = 'https://api.smugmug.com/api/v2';
 
-  var photos = [];
-  var selected = new Set();
-  var currentPage = 1;
-  var totalPhotos = 0;
-  var albumKey = '';
-  var nodeKey = '';
-  var galleryUrl = '';
-  var PAGE_SIZE = 60;
+var photos = [], selected = new Set(), page = 1, total = 0, albumKey = '', nodeKey = '';
+var PER_PAGE = 50;
 
-  var urlParams = new URLSearchParams(window.location.search);
-  var galleryParam = urlParams.get('gallery');
-  var selParam = urlParams.get('sel');
-  var smUrl = urlParams.get('url');
+var params = new URLSearchParams(location.search);
+var pGallery = params.get('gallery');
+var pSel = params.get('sel');
 
-  // --- Modalità fotografo ---
-  if (selParam && !galleryParam && !smUrl) {
-    show('foto-mode');
-    var ids = selParam.split(',').filter(Boolean);
-    document.getElementById('foto-count').textContent = ids;
-    document.getElementById('foto-ids-list').textContent = ids.join('\n');
-    document.getElementById('btn-open-sm').onclick = function() {
-      // Apre la galleria SmugMug se c'è l'URL nel referrer o nel parametro
-      window.open('https://www.fabiozito.com', '_blank');
-    };
-    return;
+// --- Modalità fotografo ---
+if (pSel && pGallery) {
+  show('foto-mode');
+  var ids = pSel.split(',').filter(Boolean);
+  document.getElementById('foto-count').textContent = ids.length;
+  document.getElementById('foto-ids-list').textContent = ids.join('\n');
+  document.getElementById('btn-open-sm').onclick = function(){
+    window.open('https://www.fabiozito.com/gallery/n-' + pGallery + '?sel=' + pSel, '_blank');
+  };
+  return;
+}
+
+// --- Modalità cliente con galleria diretta ---
+if (pGallery) { go(pGallery); return; }
+
+// --- Landing ---
+show('landing');
+document.getElementById('btn-carica').onclick = submit;
+document.getElementById('url-input').addEventListener('keydown', function(e){ if(e.key==='Enter') submit(); });
+// Se arriva un URL già nell'input (es. da condivisione iOS)
+window.addEventListener('load', function(){
+  var hash = decodeURIComponent(location.hash.slice(1));
+  if(hash && hash.includes('fabiozito.com')) {
+    document.getElementById('url-input').value = hash;
   }
+});
 
-  // --- Modalità fotografo con gallery ---
-  if (selParam && galleryParam) {
-    show('foto-mode');
-    var ids = selParam.split(',').filter(Boolean);
-    document.getElementById('foto-count').textContent = ids.length;
-    document.getElementById('foto-ids-list').textContent = ids.join(', ');
-    var smGalleryUrl = buildSmugMugUrl(galleryParam);
-    var openBtn = document.getElementById('btn-open-sm');
-    openBtn.textContent = 'Apri galleria SmugMug';
-    openBtn.onclick = function() { window.open(smGalleryUrl + '?sel=' + selParam, '_blank'); };
-    return;
-  }
+function submit(){
+  var v = document.getElementById('url-input').value.trim();
+  var nk = parseNodeKey(v);
+  if(!nk){ err('Link non valido. Copia l\'URL completo dalla barra del browser (deve contenere /n-XXXXX).'); return; }
+  err('');
+  go(nk);
+}
 
-  // --- Modalità cliente: galleria da URL parameter ---
-  if (galleryParam) {
-    startWithNodeKey(galleryParam);
-    return;
-  }
+function parseNodeKey(url){
+  // https://www.fabiozito.com/Cartella/n-p4wQLk  oppure  https://www.fabiozito.com/Cartella/n-p4wQLk/i-XXXXX
+  var m = url.match(/\/n-([A-Za-z0-9]{4,10})(?:\/|$|\?)/);
+  return m ? m[1] : null;
+}
 
-  // --- Landing: mostra form ---
-  show('landing');
-  document.getElementById('btn-carica').onclick = handleUrlSubmit;
-  document.getElementById('url-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleUrlSubmit();
-  });
+function go(nk){
+  nodeKey = nk;
+  hide('landing'); show('spinner');
+  setText('spin-text', 'Carico la galleria…');
 
-  function handleUrlSubmit() {
-    var val = document.getElementById('url-input').value.trim();
-    var nk = extractNodeKey(val);
-    if (!nk) {
-      document.getElementById('errore-msg').style.display = 'block';
-      return;
-    }
-    document.getElementById('errore-msg').style.display = 'none';
-    startWithNodeKey(nk);
-  }
-
-  function extractNodeKey(url) {
-    // Estrae il node key da URL tipo: https://www.fabiozito.com/Galleria/n-p4wQLk
-    var m = url.match(/\/n-([a-zA-Z0-9]+)(?:\/|$|\?)/);
-    if (m) return m[1];
-    // O direttamente la chiave
-    if (/^[a-zA-Z0-9]{5,8}$/.test(url)) return url;
-    return null;
-  }
-
-  function buildSmugMugUrl(nk) {
-    return 'https://www.fabiozito.com/gallery/n-' + nk;
-  }
-
-  function startWithNodeKey(nk) {
-    nodeKey = nk;
-    show('spinner');
-    hide('landing');
-    // Prima ottieni l'album key dal node
-    apiGet('/node/' + nk + '?_verbosity=1')
-      .then(function(data) {
-        var node = data.Response && data.Response.Node;
-        if (!node) throw new Error('Galleria non trovata');
-        var albumUri = node.Uris && node.Uris.Album;
-        if (!albumUri) throw new Error('Album non trovato');
-        // Estrai album key dall'URI: /api/v2/album/22CV44
-        var ak = albumUri.split('/').pop();
-        albumKey = ak;
-        // Mostra nome galleria
-        document.getElementById('header-title').textContent = node.Name || 'Galleria';
-        return loadPhotos(1);
-      })
-      .catch(function(e) {
-        hide('spinner');
-        show('landing');
-        document.getElementById('errore-msg').textContent = 'Errore: ' + e.message;
-        document.getElementById('errore-msg').style.display = 'block';
-      });
-  }
-
-  function loadPhotos(page) {
-    var start = (page - 1) * PAGE_SIZE + 1;
-    return apiGet('/album/' + albumKey + '!images?count=' + PAGE_SIZE + '&start=' + start + '&_verbosity=1')
-      .then(function(data) {
-        var imgs = data.Response && data.Response.AlbumImage;
-        var pages = data.Response && data.Response.Pages;
-        if (pages) totalPhotos = pages.Total;
-        if (!imgs || !imgs.length) {
-          if (page === 1) throw new Error('Nessuna foto trovata');
-          return;
-        }
-
-        imgs.forEach(function(img) {
-          photos.push({
-            id: img.ImageKey,
-            thumb: img.ThumbnailUrl,
-            title: img.Title || img.FileName || img.ImageKey
-          });
-        });
-
-        renderPhotos(imgs, page === 1);
-
-        hide('spinner');
-        show('header');
-        show('grid');
-        document.getElementById('header').style.display = 'flex';
-
-        // Load more button
-        if (photos.length < totalPhotos) {
-          document.getElementById('load-more').style.display = 'block';
-          document.getElementById('btn-load').onclick = function() {
-            currentPage++;
-            document.getElementById('load-more').style.display = 'none';
-            loadPhotos(currentPage);
-          };
-        } else {
-          document.getElementById('load-more').style.display = 'none';
-        }
-      });
-  }
-
-  function renderPhotos(imgs, clear) {
-    var grid = document.getElementById('grid');
-    if (clear) grid.innerHTML = '';
-
-    imgs.forEach(function(img) {
-      var id = img.ImageKey;
-      var tile = document.createElement('div');
-      tile.className = 'tile' + (selected.has(id) ? ' selected' : '');
-      tile.dataset.id = id;
-
-      // Usa thumbnail - sostituisce Th con S per qualità migliore se possibile
-      var thumbSrc = img.ThumbnailUrl;
-
-      tile.innerHTML =
-        '<img src="' + thumbSrc + '" alt="' + (img.Title || '') + '" loading="lazy">' +
-        '<div class="heart"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
-
-      tile.addEventListener('click', function() { togglePhoto(id, tile); });
-      grid.appendChild(tile);
+  // Prima ottieni il node per trovare l'albumKey
+  smFetch('/node/' + nk + '?_verbosity=1')
+    .then(function(data){
+      var node = data.Response && data.Response.Node;
+      if(!node) throw new Error('Galleria non trovata. Controlla il link.');
+      var albumUri = node.Uris && node.Uris.Album;
+      if(!albumUri) throw new Error('Nessun album trovato in questa galleria.');
+      albumKey = albumUri.split('/').pop();
+      document.getElementById('header-title').textContent = node.Name || 'Galleria';
+      setText('spin-text', 'Carico le foto…');
+      return loadPage(1);
+    })
+    .catch(function(e){
+      hide('spinner'); show('landing');
+      err('Errore: ' + e.message);
     });
-  }
+}
 
-  function togglePhoto(id, tile) {
-    if (selected.has(id)) {
-      selected.delete(id);
-      tile.classList.remove('selected');
-    } else {
-      selected.add(id);
-      tile.classList.add('selected');
-      // Re-trigger animation
-      var heart = tile.querySelector('.heart');
-      heart.style.animation = 'none';
-      heart.offsetHeight;
-      heart.style.animation = '';
-    }
-    updateBar();
-  }
-
-  function updateBar() {
-    var n = selected.size;
-    document.getElementById('bar-count').innerHTML = '<strong>' + n + '</strong> ' + (n === 1 ? 'foto selezionata' : 'foto selezionate');
-    document.getElementById('bar').style.display = n > 0 ? 'flex' : 'none';
-    document.getElementById('count-badge').textContent = n;
-    document.getElementById('count-badge').style.display = n > 0 ? 'inline' : 'none';
-    document.getElementById('btn-condividi').style.display = n > 0 ? 'block' : 'none';
-  }
-
-  function openModal() {
-    var ids = [...selected].join(',');
-    var link = window.location.origin + window.location.pathname + '?gallery=' + nodeKey + '&sel=' + ids;
-    document.getElementById('link-box').value = link;
-    document.getElementById('modal-overlay').classList.add('open');
-  }
-
-  document.getElementById('bar-btn').onclick = openModal;
-  document.getElementById('btn-condividi').onclick = openModal;
-
-  document.getElementById('btn-copia').onclick = function() {
-    var box = document.getElementById('link-box');
-    box.select();
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(box.value).then(function() {
-        document.getElementById('btn-copia').textContent = '✓ Copiato!';
-        setTimeout(function() { document.getElementById('btn-copia').textContent = 'Copia link'; }, 2000);
+function loadPage(p){
+  var start = (p-1)*PER_PAGE + 1;
+  return smFetch('/album/' + albumKey + '!images?count=' + PER_PAGE + '&start=' + start + '&_verbosity=1')
+    .then(function(data){
+      var imgs = data.Response && data.Response.AlbumImage;
+      var pages = data.Response && data.Response.Pages;
+      if(pages) total = pages.Total || 0;
+      if(!imgs || !imgs.length){
+        if(p===1) throw new Error('Nessuna foto trovata in questa galleria.');
+        return;
+      }
+      imgs.forEach(function(img){
+        photos.push({ id: img.ImageKey, thumb: img.ThumbnailUrl });
       });
-    } else {
-      document.execCommand('copy');
+      renderPage(imgs, p===1);
+      hide('spinner');
+      document.getElementById('header').style.display = 'flex';
+      document.getElementById('grid').style.display = 'grid';
+      if(photos.length < total){
+        document.getElementById('load-more').style.display = 'block';
+        document.getElementById('btn-load').onclick = function(){
+          page++;
+          document.getElementById('load-more').style.display = 'none';
+          show('spinner'); setText('spin-text','Carico altre foto…');
+          loadPage(page).then(function(){ hide('spinner'); });
+        };
+      } else {
+        document.getElementById('load-more').style.display = 'none';
+      }
+    });
+}
+
+function renderPage(imgs, clear){
+  var grid = document.getElementById('grid');
+  if(clear) grid.innerHTML = '';
+  imgs.forEach(function(img){
+    var id = img.ImageKey;
+    var tile = document.createElement('div');
+    tile.className = 'tile' + (selected.has(id) ? ' selected' : '');
+    tile.innerHTML =
+      '<img src="' + img.ThumbnailUrl + '" loading="lazy" alt="">' +
+      '<div class="overlay"></div>' +
+      '<div class="heart"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
+    tile.addEventListener('click', function(){ toggle(id, tile); });
+    grid.appendChild(tile);
+  });
+}
+
+function toggle(id, tile){
+  if(selected.has(id)){ selected.delete(id); tile.classList.remove('selected'); }
+  else { selected.add(id); tile.classList.add('selected'); }
+  updateBar();
+}
+
+function updateBar(){
+  var n = selected.size;
+  document.getElementById('bar-count').innerHTML = '<strong>' + n + '</strong> ' + (n===1?'foto selezionata':'foto selezionate');
+  document.getElementById('bar').style.display = n > 0 ? 'flex' : 'none';
+  document.getElementById('count-badge').textContent = n;
+  document.getElementById('count-badge').style.display = n > 0 ? 'inline' : 'none';
+  document.getElementById('btn-condividi').style.display = n > 0 ? 'block' : 'none';
+}
+
+function openModal(){
+  var ids = [...selected].join(',');
+  var link = location.origin + location.pathname + '?gallery=' + nodeKey + '&sel=' + ids;
+  document.getElementById('link-box').value = link;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+document.getElementById('bar-btn').onclick = openModal;
+document.getElementById('btn-condividi').onclick = openModal;
+document.getElementById('btn-copia').onclick = function(){
+  var box = document.getElementById('link-box');
+  box.select();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(box.value).then(function(){
       document.getElementById('btn-copia').textContent = '✓ Copiato!';
-      setTimeout(function() { document.getElementById('btn-copia').textContent = 'Copia link'; }, 2000);
-    }
-  };
+      setTimeout(function(){ document.getElementById('btn-copia').textContent = 'Copia link'; }, 2000);
+    });
+  } else { document.execCommand('copy'); }
+};
+document.getElementById('btn-chiudi').onclick = function(){ document.getElementById('modal-overlay').classList.remove('open'); };
+document.getElementById('modal-overlay').onclick = function(e){ if(e.target===this) this.classList.remove('open'); };
 
-  document.getElementById('btn-chiudi').onclick = function() {
-    document.getElementById('modal-overlay').classList.remove('open');
-  };
-  document.getElementById('modal-overlay').onclick = function(e) {
-    if (e.target === this) this.classList.remove('open');
-  };
+// --- API SmugMug con fallback proxy ---
+var PROXIES = [
+  function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); },
+  function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
+  function(u){ return 'https://thingproxy.freeboard.io/fetch/' + u; },
+];
+var proxyIdx = 0;
 
-  // --- API helper ---
-  function apiGet(path) {
-    var url = SM_API + path;
-    if (url.includes('?')) url += '&APIKey=' + API_KEY + '&_accept=application/json';
-    else url += '?APIKey=' + API_KEY + '&_accept=application/json';
-    return fetch(PROXY + encodeURIComponent(url))
-      .then(function(r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
+function smFetch(path){
+  var url = SM_API + path;
+  url += url.includes('?') ? '&' : '?';
+  url += 'APIKey=' + API_KEY + '&_accept=application/json';
+
+  function tryProxy(idx){
+    if(idx >= PROXIES.length) return Promise.reject(new Error('Impossibile connettersi. Riprova tra qualche secondo.'));
+    var proxyUrl = PROXIES[idx](url);
+    return fetch(proxyUrl, { signal: AbortSignal.timeout(8000) })
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
       })
-      .then(function(data) {
-        if (data.Code && data.Code !== 200) throw new Error(data.Message || 'Errore API');
+      .then(function(text){
+        if(!text || text.trim() === '') throw new Error('Risposta vuota');
+        var data = JSON.parse(text);
+        if(data.Code && data.Code !== 200) throw new Error(data.Message || 'Errore API SmugMug');
+        proxyIdx = idx; // salva il proxy che funziona
         return data;
+      })
+      .catch(function(e){
+        console.warn('Proxy ' + idx + ' fallito:', e.message);
+        return tryProxy(idx + 1);
       });
   }
+  return tryProxy(proxyIdx);
+}
 
-  // --- Utils ---
-  function show(id) { var el = document.getElementById(id); if (el) el.style.display = ''; }
-  function hide(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; }
+// --- Utils ---
+function show(id){ var e=document.getElementById(id); if(e){ e.style.display=''; } }
+function hide(id){ var e=document.getElementById(id); if(e){ e.style.display='none'; } }
+function err(msg){ var e=document.getElementById('errore-msg'); e.textContent=msg; e.style.display=msg?'block':'none'; }
+function setText(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; }
 
 })();
 </script>
